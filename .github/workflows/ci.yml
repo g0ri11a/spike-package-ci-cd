@@ -49,10 +49,9 @@ jobs:
           echo "Checking URL: $URL"
 
           STATUS=$(curl -s -L -o /dev/null -w "%{http_code}" -u "${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}" $URL)
-          echo "Status: $STATUS"
 
           if [ "$STATUS" -eq 200 ]; then
-            echo "::notice ::Child Version ${{ env.VERSION }} already exists. Cancelling CI."
+            echo "::notice ::Package Version ${{ env.VERSION }} already exists. Cancelling CI."
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -62,6 +61,8 @@ jobs:
         if: steps.check_pkg.outputs.exists == 'true'
         run: |
           gh run cancel ${{ github.run_id }}
+        env:
+          GITHUB_H_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Unit Test
         run: ./gradlew test
