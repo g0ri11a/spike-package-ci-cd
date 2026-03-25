@@ -48,7 +48,7 @@ jobs:
           URL="https://maven.pkg.github.com/${{ github.repository }}/${{ env.GROUP_PATH }}/${{ env.ARTIFACT_ID }}/${{ env.VERSION }}/${{ env.ARTIFACT_ID }}-${{ env.VERSION }}.jar"
           echo "Checking URL: $URL"
 
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -u "${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}" $URL)
+          STATUS=$(curl -s -L -o /dev/null -w "%{http_code}" -u "${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}" $URL)
           echo "Status: $STATUS"
 
           if [ "$STATUS" -eq 200 ]; then
