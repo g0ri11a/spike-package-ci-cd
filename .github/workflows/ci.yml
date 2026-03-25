@@ -45,10 +45,13 @@ jobs:
       - name: Check Artifact in GitHub Packages
         id: check_pkg
         run: |
-          URL="https://maven.pkg.github.com/${{ github.repository }}/${{ env.GROUP_PATH }}/${{ env.ARTIFACT_ID }}/${{ env.VERSION }}/${{ env.ARTIFACT_ID }}-${{ env.VERSION }}.pom"
+          URL="https://maven.pkg.github.com/${{ github.repository }}/${{ env.GROUP_PATH }}/${{ env.ARTIFACT_ID }}/${{ env.VERSION }}/${{ env.ARTIFACT_ID }}-${{ env.VERSION }}.jar"
+          //'https://maven.pkg.github.com/g0ri11a/spike-gradle-ci-cd/com/gorilla/spike/app/1.0.0/app-1.0.0.jar'
+             https://maven.pkg.github.com/g0ri11a/spike-gradle-ci-cd/com/gorilla/spike/app/1.0.0/app-1.0.0.pom
           echo "Checking URL: $URL"
 
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" -u "${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}" $URL)
+          echo "Status: $STATUS"
 
           if [ "$STATUS" -eq 200 ]; then
             echo "::notice ::Child Version ${{ env.VERSION }} already exists. Cancelling CI."
