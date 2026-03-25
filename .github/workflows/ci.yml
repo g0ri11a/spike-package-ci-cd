@@ -45,7 +45,7 @@ jobs:
       - name: Check Artifact in GitHub Packages
         id: check_pkg
         run: |
-          URL="https://maven.pkg.github.com/${{ github.repository }}/${{ env.GROUP_PATH }}/${{ env.ARTIFACT_ID }}/${{ env.VERSION }}/${{ env.ARTIFACT_ID }}-${{ env.VERSION }}.jar"
+          URL="https://maven.pkg.github.com/${{ github.repository }}/${{ env.GROUP_PATH }}/${{ env.ARTIFACT_ID }}/${{ env.VERSION }}/${{ env.ARTIFACT_ID }}-${{ env.VERSION }}.pom"
           echo "Checking URL: $URL"
 
           STATUS=$(curl -s -L -o /dev/null -w "%{http_code}" -u "${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}" $URL)
@@ -62,7 +62,7 @@ jobs:
         run: |
           gh run cancel ${{ github.run_id }}
         env:
-          GITHUB_H_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Unit Test
         run: ./gradlew test
